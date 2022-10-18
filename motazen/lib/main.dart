@@ -124,7 +124,7 @@ class _IconStepperDemo extends State<IconStepperDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Directionality(
+      home:   Directionality(
           // <-- Add this Directionality
           textDirection: TextDirection.rtl,
           child: Scaffold(
