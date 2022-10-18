@@ -10,7 +10,7 @@ Future main() async {
   await Firebase.initializeApp();
   /********************************************* 
    Here i will fetch the quastion based on the chosen asspect 
-   The output form here should be : 
+   The output from here should be : 
    1- the quastion array containing all the quastion quastionsList
    2- steps number which is based on the quastion number activeASteps notice 
    3- Map to collect the answare where the key is the activestep and the value is the answars for start all are zeros.
@@ -20,12 +20,12 @@ Future main() async {
   // at the end the answare mab will have as the value answarenumber+short of the aspect in char .
   /*Start if fetching quastion */
   globalVaraible.activeStep =
-      0; //always zero to start the stepper from thw first step .
+      0; //always zero to start the stepper from the first step .
   var temaspect = [
     "family",
     "career",
     "health"
-  ]; //take it as an array from Manar and reem code .
+  ]; //take it as an array from reem code .
   List<dynamic> templist = []; //temporary store each aspect quastion
   int countr = 0; //to fill in the answer list
   int endpoint = 0; // to know where to stop in  creating the answers list ;
