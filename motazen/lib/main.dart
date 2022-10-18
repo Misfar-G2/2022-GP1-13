@@ -1,11 +1,4 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,47 +19,65 @@ Future main() async {
   ******************************************* */
   // at the end the answare mab will have as the value answarenumber+short of the aspect in char .
   /*Start if fetching quastion */
-  globalVaraible.activeStep = 0; //always zero to start the stepper from thw first step .
-  var temaspect = ["family","career","health"]; //take it as an array from Manar and reem code .
-  List<dynamic> templist = []; //temporary store each aspect quastion 
-  int countr = 0 ; //to fill in the answer list 
-  int endpoint = 0 ; // to know where to stop in  creating the answers list ; 
-  for (int i = 0 ; i<temaspect.length;i++){ //the output of this loop is the quastion list and the answer list 
+  globalVaraible.activeStep =
+      0; //always zero to start the stepper from thw first step .
+  var temaspect = [
+    "family",
+    "career",
+    "health"
+  ]; //take it as an array from Manar and reem code .
+  List<dynamic> templist = []; //temporary store each aspect quastion
+  int countr = 0; //to fill in the answer list
+  int endpoint = 0; // to know where to stop in  creating the answers list ;
+  for (int i = 0; i < temaspect.length; i++) {
+    //the output of this loop is the quastion list and the answer list
     String aspect = temaspect[i];
-    switch(aspect){ // include all the aspect make sure the index is write 
+    switch (aspect) {
+      // include all the aspect make sure the index is write
       case "family":
-      
-     var aspectQuastions = await FirebaseFirestore.instance.collection("aspect_Quastion").get().then((value) => value.docs.elementAt(0));
-     templist=Map<String, dynamic>.from(aspectQuastions.data()).values.toList(); 
-     globalVaraible.quastionsList.addAll(templist);
-   for (countr;countr<=templist.length-1+endpoint;countr++){
-    globalVaraible.answares[countr]="0F";
-   }
-   endpoint= countr;
-      break;
+        var aspectQuastions = await FirebaseFirestore.instance
+            .collection("aspect_Quastion")
+            .get()
+            .then((value) => value.docs.elementAt(0));
+        templist =
+            Map<String, dynamic>.from(aspectQuastions.data()).values.toList();
+        globalVaraible.quastionsList.addAll(templist);
+        for (countr; countr <= templist.length - 1 + endpoint; countr++) {
+          globalVaraible.answares[countr] = "0F";
+        }
+        endpoint = countr;
+        break;
       case "career":
-     var aspectQuastions = await FirebaseFirestore.instance.collection("aspect_Quastion").get().then((value) => value.docs.elementAt(1));
-     templist=Map<String, dynamic>.from(aspectQuastions.data()).values.toList(); 
-     globalVaraible.quastionsList.addAll(templist);
-   for (countr;countr<=templist.length-1+endpoint;countr++){
-    globalVaraible.answares[countr]="0c";
-   }
-   endpoint= countr;
-      break; 
+        var aspectQuastions = await FirebaseFirestore.instance
+            .collection("aspect_Quastion")
+            .get()
+            .then((value) => value.docs.elementAt(1));
+        templist =
+            Map<String, dynamic>.from(aspectQuastions.data()).values.toList();
+        globalVaraible.quastionsList.addAll(templist);
+        for (countr; countr <= templist.length - 1 + endpoint; countr++) {
+          globalVaraible.answares[countr] = "0c";
+        }
+        endpoint = countr;
+        break;
       case "health":
-     var aspectQuastions = await FirebaseFirestore.instance.collection("aspect_Quastion").get().then((value) => value.docs.elementAt(2));
-     templist=Map<String, dynamic>.from(aspectQuastions.data()).values.toList(); 
-     globalVaraible.quastionsList.addAll(templist);
-   for (countr;countr<=templist.length-1+endpoint;countr++){
-    globalVaraible.answares[countr]="0H";
-   }
-   endpoint= countr;
-      break;
+        var aspectQuastions = await FirebaseFirestore.instance
+            .collection("aspect_Quastion")
+            .get()
+            .then((value) => value.docs.elementAt(2));
+        templist =
+            Map<String, dynamic>.from(aspectQuastions.data()).values.toList();
+        globalVaraible.quastionsList.addAll(templist);
+        for (countr; countr <= templist.length - 1 + endpoint; countr++) {
+          globalVaraible.answares[countr] = "0H";
+        }
+        endpoint = countr;
+        break;
     }
   }
 
 /**End of fetching quastions  */
-  runApp( MaterialApp (home :IconStepperDemo())); // my widget
+  runApp(MaterialApp(home: IconStepperDemo())); // my widget
 }
 
 class IconStepperDemo extends StatefulWidget {
@@ -81,8 +92,9 @@ class _IconStepperDemo extends State<IconStepperDemo> {
   var upperBound = globalVaraible.quastionsList.length -
       1; // upperBound MUST BE total number of icons minus 1. // total numberofquastion-1 = activeSteps so that it start from the right
 //------------------------------------------------------------
-  double currentSliderValue = double.parse(globalVaraible.answares[globalVaraible.activeStep]
-      .substring(0, globalVaraible.answares[globalVaraible.activeStep].length - 1));
+  double currentSliderValue = double.parse(
+      globalVaraible.answares[globalVaraible.activeStep].substring(
+          0, globalVaraible.answares[globalVaraible.activeStep].length - 1));
 
   // always the value of the sliderRange = answare if no answare then zero
   //Start of the slider Range  = the answares of the quastion //
@@ -99,9 +111,9 @@ class _IconStepperDemo extends State<IconStepperDemo> {
           //save the value chosen by the user
           currentSliderValue = value;
           globalVaraible.answares[globalVaraible.activeStep] = "$value" +
-              globalVaraible.answares[globalVaraible.activeStep].substring(globalVaraible
-                      .answares[globalVaraible.activeStep].length -
-                  1); //take the answare chosen by the user for that quastion
+              globalVaraible.answares[globalVaraible.activeStep].substring(
+                  globalVaraible.answares[globalVaraible.activeStep].length -
+                      1); //take the answare chosen by the user for that quastion
         });
       },
     );
@@ -111,7 +123,6 @@ class _IconStepperDemo extends State<IconStepperDemo> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       debugShowCheckedModeBanner: false,
       home: Directionality(
           // <-- Add this Directionality
@@ -120,37 +131,35 @@ class _IconStepperDemo extends State<IconStepperDemo> {
             backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
             appBar: AppBar(
               leading: IconButton(
-                  // ignore: prefer_const_constructors
-                  icon: Icon(Icons.arrow_back,
-                      color: const Color.fromARGB(255, 245, 241, 241)),
-                  onPressed:() async {
-            final action = await AlertDialogs.yesCancelDialog( context, 'هل انت متاكد من الرجوع ', 'بالنقر على "تاكيد"لن يتم حفظ الاجابات ');
-            if(action == DialogsAction.yes) {
-              //return to the previouse page different code for the ios .
-             // Navigator.push(context, MaterialPageRoute(builder: (context) {return homePag();}));
-            } else {
-             print ("bey");
-            }
-          },
-
-                  ),
+                // ignore: prefer_const_constructors
+                icon: Icon(Icons.arrow_back,
+                    color: const Color.fromARGB(255, 245, 241, 241)),
+                onPressed: () async {
+                  final action = await AlertDialogs.yesCancelDialog(
+                      context,
+                      'هل انت متاكد من الرجوع ',
+                      'بالنقر على "تاكيد"لن يتم حفظ الاجابات ');
+                  if (action == DialogsAction.yes) {
+                    //return to the previouse page different code for the ios .
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) {return homePag();}));
+                  } else {
+                    print("bey");
+                  }
+                },
+              ),
               title: const Text(
                 'اسئلة تقييم الحياة ',
               ),
               elevation: 0,
-              
-              flexibleSpace://for coloring
-               Container(
-                decoration:const BoxDecoration(
-                  gradient:LinearGradient(
-          // ignore: prefer_const_literals_to_create_immutables
-          colors: [Color(0xff66bf77), Color(0xff3d82c4)],
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-        )
-      
-                )
-              ),
+              flexibleSpace: //for coloring
+                  Container(
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                // ignore: prefer_const_literals_to_create_immutables
+                colors: [Color(0xff66bf77), Color(0xff3d82c4)],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+              ))),
             ),
             body: Padding(
               padding: const EdgeInsets.all(0),
@@ -162,14 +171,15 @@ class _IconStepperDemo extends State<IconStepperDemo> {
                   ),
                   Container(
                       decoration: BoxDecoration(
-                          color:
-                              Colors.grey[200],
+                          color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(0)),
                       child: IconStepper(
-                        stepReachedAnimationEffect:Curves.linear,//stop the jumping 
+                        stepReachedAnimationEffect:
+                            Curves.linear, //stop the jumping
                         lineColor: Colors.black,
                         stepColor: Colors.white,
-                        activeStepColor: const Color.fromARGB(255, 165, 154, 154),
+                        activeStepColor:
+                            const Color.fromARGB(255, 165, 154, 154),
                         stepRadius: 20,
                         stepPadding: 0,
                         // move it to a function so that you take the aspect and the number of quastion = x and then you reapt the icon    x times
@@ -186,10 +196,13 @@ class _IconStepperDemo extends State<IconStepperDemo> {
                     if not the value is 1 */
 
                             globalVaraible.activeStep = index;
-                            currentSliderValue = double.parse(
-                                globalVaraible.answares[globalVaraible.activeStep].substring(
+                            currentSliderValue = double.parse(globalVaraible
+                                .answares[globalVaraible.activeStep]
+                                .substring(
                                     0,
-                                    globalVaraible.answares[globalVaraible.activeStep].length -
+                                    globalVaraible
+                                            .answares[globalVaraible.activeStep]
+                                            .length -
                                         1)); // this is for reseting the slider for each quasion but the problem we want to save the value
                           });
                         },
@@ -214,15 +227,14 @@ class _IconStepperDemo extends State<IconStepperDemo> {
                     child: Column(
                       textDirection: TextDirection.rtl,
                       children: [
-                        Text(
-                          headerText(),
-                           style: const TextStyle(color: Colors.white, fontSize:30)
-                        ),
+                        Text(headerText(),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 30)),
                         Container(
                             margin: const EdgeInsets.only(top: 20),
                             padding: const EdgeInsets.all(20),
                             child: Row(
-                              textDirection:TextDirection.ltr,
+                              textDirection: TextDirection.ltr,
                               children: [
                                 buildSlideLable(10),
                                 Expanded(
@@ -234,11 +246,8 @@ class _IconStepperDemo extends State<IconStepperDemo> {
                       ],
                     ),
                   ),
-
-                  
                 ],
               ),
-              
             ),
             bottomSheet: doneButton(),
           )),
@@ -254,12 +263,15 @@ class _IconStepperDemo extends State<IconStepperDemo> {
     return Text.rich(
       TextSpan(
         text: "السؤال $start ",
-        style:const TextStyle(color: Colors.black54 , fontSize: 30,fontWeight: FontWeight.bold),
+        style: const TextStyle(
+            color: Colors.black54, fontSize: 30, fontWeight: FontWeight.bold),
         children: [
           TextSpan(
-            text: "/ $last",
-            style:const TextStyle(color: Colors.black54 , fontSize: 30,fontWeight: FontWeight.bold)
-          )
+              text: "/ $last",
+              style: const TextStyle(
+                  color: Colors.black54,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold))
         ],
       ),
     );
@@ -275,7 +287,8 @@ class _IconStepperDemo extends State<IconStepperDemo> {
     // create the icons and the length of the IconsList based on the answare map
     List<Icon> iconStepper = [];
     for (int i = 0; i <= globalVaraible.quastionsList.length - 1; i++) {
-      String aspect = globalVaraible.answares[i].substring(globalVaraible.answares[i].length - 1);
+      String aspect = globalVaraible.answares[i]
+          .substring(globalVaraible.answares[i].length - 1);
       switch (aspect) {
         //Must include all the aspect characters and specify an icon for that
         case "H":
@@ -291,7 +304,8 @@ class _IconStepperDemo extends State<IconStepperDemo> {
         case "c":
           {
             //statements;
-            iconStepper.add(const Icon(Icons.ac_unit_outlined, color: Colors.pink));
+            iconStepper
+                .add(const Icon(Icons.ac_unit_outlined, color: Colors.pink));
           }
           break;
         case "F":
@@ -313,26 +327,30 @@ class _IconStepperDemo extends State<IconStepperDemo> {
         width: 25,
         child: Text(
           value.round().toString(),
-          style: const TextStyle(color:Colors.white,fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       );
 
-      Widget doneButton(){ //once all quastion answare and the user is n any quastion it will be enabeld  
-      bool isAllQuastionAnswerd = true ; 
-      for (int i =0; i<globalVaraible.answares.length ;i++ ){
-        var result =double.parse(globalVaraible.answares[i].substring(0,globalVaraible.answares[i].length -1));
-        if (result == 0 ){
-            isAllQuastionAnswerd = false ;
-        }
-      }// to check whether all the quastions are answerd or not .
-        return ElevatedButton(onPressed: isAllQuastionAnswerd? () { 
-          // store the users answare and move to home 
-          
-            } :null,child: const Text("انتهيت "),);   
-}
-
-
-
+  Widget doneButton() {
+    //once all quastion answare and the user is n any quastion it will be enabeld
+    bool isAllQuastionAnswerd = true;
+    for (int i = 0; i < globalVaraible.answares.length; i++) {
+      var result = double.parse(globalVaraible.answares[i]
+          .substring(0, globalVaraible.answares[i].length - 1));
+      if (result == 0) {
+        isAllQuastionAnswerd = false;
+      }
+    } // to check whether all the quastions are answerd or not .
+    return ElevatedButton(
+      onPressed: isAllQuastionAnswerd
+          ? () {
+              // store the users answare and move to home
+            }
+          : null,
+      child: const Text("انتهيت "),
+    );
+  }
 }
 
 class MyWidget extends StatelessWidget {
